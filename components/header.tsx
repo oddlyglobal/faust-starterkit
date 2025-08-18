@@ -1,20 +1,19 @@
 import { gql } from "@apollo/client";
 import Link from "next/link";
-import style from "../styles/header.module.css";
 
 export default function Header({ siteTitle, siteDescription, menuItems }) {
   return (
-    <header className={style.header}>
-      <div className={`container ${style.container}`}>
-        <Link href="/" className={style.brand}>
-          <h2 className={style.siteTitle}>{siteTitle}</h2>
-          <p className={style.siteDescription}>{siteDescription}</p>
+    <header className="bg-gray-800 text-white py-4">
+      <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
+        <Link href="/" className="flex flex-col">
+          <h2 className="text-2xl font-bold">{siteTitle}</h2>
+          <p className="text-sm text-gray-400">{siteDescription}</p>
         </Link>
 
-        <nav className={style.nav}>
-          <ul>
+        <nav className="flex">
+          <ul className="flex space-x-4">
             {(Array.isArray(menuItems) ? menuItems : []).map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className="hover:text-gray-300">
                 <Link href={item.uri}>{item.label}</Link>
               </li>
             ))}
@@ -50,3 +49,4 @@ Header.fragments = {
     }
   `,
 };
+

@@ -1,12 +1,10 @@
-import style from "../styles/entry-header.module.css";
-
 export default function EntryHeader({ title, date, author }) {
   return (
-    <div className={style.entry}>
-      {title && <h2 className={style.title}>{title}</h2>}
+    <div className="py-8 text-center">
+      {title && <h2 className="text-3xl font-bold">{title}</h2>}
 
       {date && author && (
-        <div className={style.meta}>
+        <div className="text-gray-600 text-sm">
           By {author} on <time>{new Date(date).toDateString()}</time>
         </div>
       )}

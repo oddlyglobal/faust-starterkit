@@ -51,7 +51,7 @@ export default function Component(props) {
         menuItems={menuItems}
       />
 
-      <main className="container">
+      <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title={title} date={date} author={author?.node?.name} />
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </main>

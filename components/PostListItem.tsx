@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { FeaturedImage } from "./FeaturedImage";
-import styles from "../styles/post-list-item.module.css";
+
 
 export default function PostListItem({ post }) {
   const { title, excerpt, uri, date } = post;
 
   return (
-    <article className={styles.article}>
-      <time className={styles.time} dateTime={post.date}>
+    <article className="mb-8 p-4 border border-gray-200 rounded-lg">
+      <time className="text-sm text-gray-500" dateTime={post.date}>
         {new Date(date).toLocaleDateString(undefined, {
           year: "numeric",
           month: "long",
@@ -15,14 +15,14 @@ export default function PostListItem({ post }) {
         })}
       </time>
 
-      <h2 className={styles.title}>
-        <Link href={uri} title={title} className={styles.link}>
+      <h2 className="text-xl font-semibold mt-2">
+        <Link href={uri} title={title} className="text-blue-600 hover:underline">
           {title}
         </Link>
       </h2>
 
       {post.author && post.author.node && (
-        <div className={styles.authorRow}>
+        <div className="text-sm text-gray-600 mt-1">
           <span>by {post.author.node.name}</span>
         </div>
       )}
@@ -35,11 +35,11 @@ export default function PostListItem({ post }) {
       />
 
       <div
-        className={styles.excerpt}
+        className="mt-4 text-gray-700"
         dangerouslySetInnerHTML={{ __html: excerpt }}
       />
 
-      <Link href={uri} title="Read more" className={styles.readMore}>
+      <Link href={uri} title="Read more" className="inline-block mt-4 text-blue-600 hover:underline">
         Read more
       </Link>
     </article>

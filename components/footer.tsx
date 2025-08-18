@@ -1,8 +1,6 @@
-import styles from "../styles/footer.module.css";
-
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
+    <footer className="text-center py-4 text-gray-600 text-sm">
       Powered by{" "}
       <a href="https://wpengine.com" target="_blank" rel="noopener noreferrer">
         WP Engine

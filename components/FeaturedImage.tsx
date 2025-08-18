@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import styles from "../styles/featured-image.module.css";
 
 export function FeaturedImage({
   post,
@@ -13,15 +12,15 @@ export function FeaturedImage({
   }
 
   return (
-    <div className={styles.wrapper + " " + classNames}>
+    <div className={`relative ${classNames}`}>
       {typeof uri === "string" && uri.trim() !== "" ? (
-        <Link href={uri} title={title} className={styles.link}>
+        <Link href={uri} title={title} className="block w-full h-full">
           <Image
             src={post.featuredImage.node.sourceUrl}
             alt={post.featuredImage.node.altText || post.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={styles.image}
+            className="object-cover"
           />
         </Link>
       ) : (
@@ -30,7 +29,7 @@ export function FeaturedImage({
           alt={post.featuredImage.node.altText || post.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={styles.image}
+          className="object-cover"
         />
       )}
     </div>

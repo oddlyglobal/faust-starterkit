@@ -9,7 +9,7 @@ import { POST_LIST_FRAGMENT } from "../fragments/PostListFragment";
 import PostListItem from "../components/PostListItem";
 import { getNextStaticProps } from "@faustwp/core";
 import { useState } from "react";
-import styles from "../styles/archive.module.css";
+
 
 // Change to how many posts you want to load at once
 const BATCH_SIZE = 5;
@@ -65,7 +65,7 @@ export default function ArchivePage(props) {
 
   if (loading && !data)
     return (
-      <div className="container-main flex justify-center py-20">Loading...</div>
+      <div className="max-w-6xl mx-auto px-4 flex justify-center py-20">Loading...</div>
     );
 
   if (error) return <p>Error! {error.message}</p>;
@@ -119,7 +119,7 @@ export default function ArchivePage(props) {
         menuItems={menuItems}
       />
 
-      <main className="container mx-auto px-4">
+      <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title={`Archive for ${archiveType}: ${name}`} />
 
         <div className="space-y-12">
@@ -131,7 +131,7 @@ export default function ArchivePage(props) {
             <p>No posts found.</p>
           )}
           {posts.pageInfo.hasNextPage && (
-            <div className={styles.loadMoreButtonContainer}>
+            <div className="flex justify-center mt-8">
               <LoadMoreButton onClick={loadMorePosts} />
             </div>
           )}
@@ -162,7 +162,7 @@ const LoadMoreButton = ({ onClick }) => {
   return (
     <button
       type="button"
-      className={styles.loadMoreButton}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       onClick={handleLoadMore}
       disabled={loading}
     >

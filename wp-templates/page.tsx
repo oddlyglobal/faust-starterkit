@@ -42,7 +42,7 @@ export default function SinglePage(props) {
 
   if (loading && !data)
     return (
-      <div className="container-main flex justify-center py-20">Loading...</div>
+      <div className="max-w-6xl mx-auto px-4 flex justify-center py-20">Loading...</div>
     );
 
   if (error) return <p>Error! {error.message}</p>;
@@ -71,7 +71,7 @@ export default function SinglePage(props) {
         menuItems={menuItems}
       />
 
-      <main className="container">
+      <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title={title} />
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </main>

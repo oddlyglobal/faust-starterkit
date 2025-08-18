@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "../components/Header";
 import EntryHeader from "../components/EntryHeader";
 import Footer from "../components/Footer";
-import style from "../styles/front-page.module.css";
+
 import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
 import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
 import { useQuery } from "@apollo/client";
@@ -37,15 +37,15 @@ export default function FrontPage(props) {
         menuItems={menuItems}
       />
 
-      <main className="container">
+      <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title="Welcome to the Faust Scaffold Blueprint" />
 
-        <section className={style.cardGrid}>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="https://faustjs.org/docs/"
             target="_blank"
             rel="noopener noreferrer"
-            className={style.card}
+            className="block p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
             <h3>Documentation →</h3>
             <p>
@@ -58,7 +58,7 @@ export default function FrontPage(props) {
             href="https://my.wpengine.com/atlas#/create/blueprint"
             target="_blank"
             rel="noopener noreferrer"
-            className={style.card}
+            className="block p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
             <h3>Blueprints →</h3>
             <p>Explore production ready Faust.js starter kits.</p>
@@ -68,7 +68,7 @@ export default function FrontPage(props) {
             href="https://wpengine.com/headless-wordpress/"
             target="_blank"
             rel="noopener noreferrer"
-            className={style.card}
+            className="block p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
             <h3>Deploy →</h3>
             <p>
@@ -81,14 +81,14 @@ export default function FrontPage(props) {
             href="https://github.com/wpengine/faustjs"
             target="_blank"
             rel="noopener noreferrer"
-            className={style.card}
+            className="block p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
             <h3>Contribute →</h3>
             <p>Visit us on GitHub to explore how you can contribute!</p>
           </Link>
         </section>
 
-        <section className={style.information}>
+        <section className="my-8 p-6 border border-gray-200 rounded-lg">
           <h1>Getting Started 🚀</h1>
           <p>
             To get started on WP Engine's Platform please follow the docs here{" "}
