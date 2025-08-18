@@ -1,6 +1,6 @@
-# ![Faust.js Logo](./.github/assets/faustjs-logo.svg) Faust.js Project Evolution
+# ![Faust.js Logo](./.github/assets/faustjs-logo.svg) ODDLY's Faust.js Starter Kit
 
-This project began as a starter kit from [WP Engine's Headless Platform](https://wpengine.com/headless-wordpress/) and has since evolved with significant enhancements.
+This project serves as ODDLY's official boilerplate for building headless WordPress sites, evolved from the WP Engine Faust.js scaffolding with significant enhancements.
 
 ## Getting Started 🚀
 
