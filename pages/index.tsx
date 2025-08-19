@@ -1,16 +1,10 @@
-import { getWordPressProps, WordPressTemplate } from "@faustwp/core";
-import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
-
-interface WordPressTemplateProps {
-  __TEMPLATE_SLUG__?: string;
-  __SEED_NODE__?: any; // This can be more specific if needed
-  loading?: boolean;
-}
-
-export default function Page(props: WordPressTemplateProps) {
-  return <WordPressTemplate {...props} />;
-}
-
-export function getStaticProps(ctx: GetStaticPropsContext) { // Add type for ctx
-  return getWordPressProps({ ctx });
+// pages/index.tsx
+// This is a temporary simplification to debug the home page issue.
+export default function Home() {
+  return (
+    <div>
+      <h1>Hello from the simplified Home page!</h1>
+      <p>If you see this, the basic routing is working.</p>
+    </div>
+  );
 }
