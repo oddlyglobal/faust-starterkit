@@ -1,7 +1,19 @@
 import { gql } from "@apollo/client";
 import Link from "next/link";
 
-export default function Header({ siteTitle, siteDescription, menuItems }) {
+interface MenuItem {
+  id: string;
+  uri: string;
+  label: string;
+}
+
+interface HeaderProps {
+  siteTitle?: string;
+  siteDescription?: string;
+  menuItems?: MenuItem[];
+}
+
+export default function Header({ siteTitle, siteDescription, menuItems }: HeaderProps) {
   return (
     <header className="bg-gray-800 text-white py-4">
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">

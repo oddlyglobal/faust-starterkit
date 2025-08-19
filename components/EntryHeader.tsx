@@ -1,4 +1,10 @@
-export default function EntryHeader({ title, date, author }) {
+interface EntryHeaderProps {
+  title?: string;
+  date?: string;
+  author?: string;
+}
+
+export default function EntryHeader({ title, date, author }: EntryHeaderProps) {
   return (
     <div className="py-8 text-center">
       {title && <h2 className="text-3xl font-bold">{title}</h2>}

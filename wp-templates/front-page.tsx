@@ -1,15 +1,26 @@
 import Head from "next/head";
 import Link from "next/link";
-import Header from "../components/Header";
+import Header from "../components/header";
 import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/Footer";
+import Footer from "../components/footer";
 
 import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
 import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
-import { useQuery } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client"; // Add gql import
 import { getNextStaticProps } from "@faustwp/core";
+import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
 
-export default function FrontPage(props) {
+interface FrontPageProps {
+  loading?: boolean;
+}
+
+// Combine all queries into a single query for FrontPage.query
+FrontPage.query = gql`
+  ${SITE_DATA_QUERY}
+  ${HEADER_MENU_QUERY}
+`;
+
+export default function FrontPage(props: FrontPageProps) {
   // Loading state for previews
   if (props.loading) {
     return <>Loading...</>;
@@ -18,6 +29,9 @@ export default function FrontPage(props) {
 
   const siteDataQuery = useQuery(SITE_DATA_QUERY) || {};
   const headerMenuDataQuery = useQuery(HEADER_MENU_QUERY) || {};
+
+  // Add console.log for debugging
+  console.log("FrontPage data:", siteDataQuery.data, headerMenuDataQuery.data);
 
   const siteData = siteDataQuery?.data?.generalSettings || {};
   const menuItems = headerMenuDataQuery?.data?.primaryMenuItems?.nodes || {
@@ -250,18 +264,11 @@ export default function FrontPage(props) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context: GetStaticPropsContext) { // Add type for context
   return getNextStaticProps(context, {
     Page: FrontPage,
     revalidate: 60,
   });
 }
 
-FrontPage.queries = [
-  {
-    query: SITE_DATA_QUERY,
-  },
-  {
-    query: HEADER_MENU_QUERY,
-  },
-];
+

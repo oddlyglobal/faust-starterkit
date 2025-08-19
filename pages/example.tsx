@@ -1,9 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
-import Header from "../components/Header";
+import Header from "../components/header";
 import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/Footer";
+import Footer from "../components/footer";
 import { getNextStaticProps } from "@faustwp/core";
+
+import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
 
 /**
  * Next.js file based page example with Faust helpers.
@@ -27,7 +29,7 @@ export default function Page() {
         menuItems={menuItems}
       />
 
-      <main className="container">
+      <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title="Next.js Page Example" />
         <p>Next.js pages are still supported!</p>
       </main>
@@ -44,7 +46,7 @@ Page.query = gql`
   }
 `;
 
-export function getStaticProps(ctx) {
+export function getStaticProps(ctx: GetStaticPropsContext) { // Add type for ctx
   return getNextStaticProps(ctx, {
     Page,
   });

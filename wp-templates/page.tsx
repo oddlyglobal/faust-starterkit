@@ -1,11 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
 import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../components/footer";
+import Header from "../components/header";
 import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
 import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
 import { getNextStaticProps } from "@faustwp/core";
+import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
 
 const PAGE_QUERY = gql`
   query GetPage($databaseId: ID!, $asPreview: Boolean = false) {
@@ -16,13 +17,21 @@ const PAGE_QUERY = gql`
   }
 `;
 
-export default function SinglePage(props) {
+interface SinglePageProps {
+  __SEED_NODE__?: {
+    databaseId?: string;
+    asPreview?: boolean;
+  };
+  loading?: boolean;
+}
+
+export default function SinglePage(props: SinglePageProps) {
   if (props.loading) {
     return <>Loading...</>;
   }
 
-  const databaseId = props.__SEED_NODE__.databaseId;
-  const asPreview = props.__SEED_NODE__.asPreview;
+  const databaseId = props.__SEED_NODE__?.databaseId;
+  const asPreview = props.__SEED_NODE__?.asPreview;
 
   const {
     data,
@@ -85,9 +94,9 @@ export default function SinglePage(props) {
 SinglePage.queries = [
   {
     query: PAGE_QUERY,
-    variables: ({ databaseId }, ctx) => ({
+    variables: ({ databaseId }: { databaseId: string }, ctx: GetStaticPropsContext) => ({ // Add types for databaseId and ctx
       databaseId,
-      asPreview: ctx?.asPreview,
+      asPreview: ctx?.preview,
     }),
   },
   {

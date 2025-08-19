@@ -1,15 +1,44 @@
 import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
-import Header from "../components/Header";
+import Header from "../components/header";
 import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/Footer";
+import Footer from "../components/footer";
 import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
 import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
 import { POST_LIST_FRAGMENT } from "../fragments/PostListFragment";
 import PostListItem from "../components/PostListItem";
 import { getNextStaticProps } from "@faustwp/core";
 import { useState } from "react";
+import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
 
+interface ArchivePageProps {
+  __SEED_NODE__?: {
+    uri?: string;
+  };
+  loading?: boolean;
+}
+
+interface Post { // Define Post interface based on PostListFragment
+  id: string;
+  title?: string;
+  uri?: string;
+  excerpt?: string;
+  date?: string;
+  featuredImage?: {
+    node?: {
+      sourceUrl?: string;
+      altText?: string;
+    };
+  };
+  author?: {
+    node?: {
+      name?: string;
+      avatar?: {
+        url?: string;
+      };
+    };
+  };
+}
 
 // Change to how many posts you want to load at once
 const BATCH_SIZE = 5;
@@ -47,8 +76,15 @@ const ARCHIVE_QUERY = gql`
   }
 `;
 
-export default function ArchivePage(props) {
-  const currentUri = props.__SEED_NODE__.uri;
+// Combine all queries into a single query for ArchivePage.query
+ArchivePage.query = gql`
+  ${ARCHIVE_QUERY}
+  ${SITE_DATA_QUERY}
+  ${HEADER_MENU_QUERY}
+`;
+
+export default function ArchivePage(props: ArchivePageProps) {
+  const currentUri = props.__SEED_NODE__?.uri;
   const {
     data,
     loading = true,
@@ -124,7 +160,7 @@ export default function ArchivePage(props) {
 
         <div className="space-y-12">
           {posts && posts.nodes && posts.nodes.length > 0 ? (
-            posts.nodes.map((post) => (
+            posts.nodes.map((post: Post) => (
               <PostListItem key={post.id} post={post} />
             ))
           ) : (
@@ -143,14 +179,14 @@ export default function ArchivePage(props) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context: GetStaticPropsContext) { // Add type for context
   return getNextStaticProps(context, {
     Page: ArchivePage,
     revalidate: 60,
   });
 }
 
-const LoadMoreButton = ({ onClick }) => {
+const LoadMoreButton = ({ onClick }: { onClick: () => void }) => { // Add type for onClick
   const [loading, setLoading] = useState(false);
 
   const handleLoadMore = async () => {
@@ -171,19 +207,4 @@ const LoadMoreButton = ({ onClick }) => {
   );
 };
 
-ArchivePage.queries = [
-  {
-    query: ARCHIVE_QUERY,
-    variables: ({ uri }) => ({
-      uri,
-      first: BATCH_SIZE,
-      after: null,
-    }),
-  },
-  {
-    query: SITE_DATA_QUERY,
-  },
-  {
-    query: HEADER_MENU_QUERY,
-  },
-];
+
