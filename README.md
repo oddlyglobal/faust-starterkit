@@ -132,3 +132,5 @@ To modernize the styling and remove all other CSS implementations, the project w
 3.  **Configured `globals.css`:** The `styles/globals.css` file was updated to include the Tailwind CSS directives (`@tailwind base; @tailwind components; @tailwind utilities;`) and all other existing CSS rules were removed.
 4.  **Removed CSS Modules:** All `.module.css` files from the `styles` directory were deleted.
 5.  **Refactored Components:** All components and pages that previously used CSS modules were refactored to use Tailwind CSS utility classes instead. This involved removing `import` statements for CSS modules and replacing the old class names with appropriate Tailwind classes.
+
+<!-- Trigger new Vercel build -->
