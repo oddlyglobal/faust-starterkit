@@ -1,15 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
-import Head from "next/head";
-import Header from "../components/header";
+import { getNextStaticProps } from "@faustwp/core";
+import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
+import { useState } from "react";
+import Layout from "../src/components/Layout";
 import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/footer";
-import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
-import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
 import { POST_LIST_FRAGMENT } from "../fragments/PostListFragment";
 import PostListItem from "../components/PostListItem";
-import { getNextStaticProps } from "@faustwp/core";
-import { useState } from "react";
-import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
 
 interface ArchivePageProps {
   __SEED_NODE__?: {
@@ -76,13 +72,6 @@ const ARCHIVE_QUERY = gql`
   }
 `;
 
-// Combine all queries into a single query for ArchivePage.query
-ArchivePage.query = gql`
-  ${ARCHIVE_QUERY}
-  ${SITE_DATA_QUERY}
-  ${HEADER_MENU_QUERY}
-`;
-
 export default function ArchivePage(props: ArchivePageProps) {
   const currentUri = props.__SEED_NODE__?.uri;
   const {
@@ -93,11 +82,8 @@ export default function ArchivePage(props: ArchivePageProps) {
   } = useQuery(ARCHIVE_QUERY, {
     variables: { first: BATCH_SIZE, after: null, uri: currentUri },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
-
-  const siteDataQuery = useQuery(SITE_DATA_QUERY) || {};
-  const headerMenuDataQuery = useQuery(HEADER_MENU_QUERY) || {};
 
   if (loading && !data)
     return (
@@ -110,11 +96,6 @@ export default function ArchivePage(props: ArchivePageProps) {
     return <p>No posts have been published</p>;
   }
 
-  const siteData = siteDataQuery?.data?.generalSettings || {};
-  const menuItems = headerMenuDataQuery?.data?.primaryMenuItems?.nodes || {
-    nodes: [],
-  };
-  const { title: siteTitle, description: siteDescription } = siteData;
   const { archiveType, name, posts } = data?.nodeByUri || {};
 
   const loadMorePosts = async () => {
@@ -144,17 +125,7 @@ export default function ArchivePage(props: ArchivePageProps) {
   };
 
   return (
-    <>
-      <Head>
-        <title>{`${archiveType}: ${name} - ${siteTitle}`}</title>
-      </Head>
-
-      <Header
-        siteTitle={siteTitle}
-        siteDescription={siteDescription}
-        menuItems={menuItems}
-      />
-
+    <Layout title={`${archiveType}: ${name}`}>
       <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title={`Archive for ${archiveType}: ${name}`} />
 
@@ -173,9 +144,7 @@ export default function ArchivePage(props: ArchivePageProps) {
           )}
         </div>
       </main>
-
-      <Footer />
-    </>
+    </Layout>
   );
 }
 
@@ -207,4 +176,13 @@ const LoadMoreButton = ({ onClick }: { onClick: () => void }) => { // Add type f
   );
 };
 
-
+ArchivePage.queries = [
+  {
+    query: ARCHIVE_QUERY,
+    variables: ({ uri }: { uri: string }) => ({ // Add type for uri
+      uri,
+      first: BATCH_SIZE,
+      after: null,
+    }),
+  },
+];

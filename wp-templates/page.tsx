@@ -1,12 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import Head from "next/head";
-import EntryHeader from "../components/EntryHeader";
-import Footer from "../components/footer";
-import Header from "../components/header";
-import { SITE_DATA_QUERY } from "../queries/SiteSettingsQuery";
-import { HEADER_MENU_QUERY } from "../queries/MenuQueries";
 import { getNextStaticProps } from "@faustwp/core";
 import { GetStaticPropsContext } from "next"; // Import GetStaticPropsContext
+import Layout from "../src/components/Layout";
+import EntryHeader from "../components/EntryHeader";
 
 const PAGE_QUERY = gql`
   query GetPage($databaseId: ID!, $asPreview: Boolean = false) {
@@ -43,11 +39,8 @@ export default function SinglePage(props: SinglePageProps) {
       asPreview: asPreview,
     },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
-
-  const siteDataQuery = useQuery(SITE_DATA_QUERY) || {};
-  const headerMenuDataQuery = useQuery(HEADER_MENU_QUERY) || {};
 
   if (loading && !data)
     return (
@@ -60,33 +53,15 @@ export default function SinglePage(props: SinglePageProps) {
     return <p>No pages have been published</p>;
   }
 
-
-  const siteData = siteDataQuery?.data?.generalSettings || {};
-  const menuItems = headerMenuDataQuery?.data?.primaryMenuItems?.nodes || {
-    nodes: [],
-  };
-  const { title: siteTitle, description: siteDescription } = siteData;
   const { title, content } = data?.page || {};
 
   return (
-    <>
-      <Head>
-        <title>{`${title} - ${siteTitle}`}</title>
-      </Head>
-
-      <Header
-        siteTitle={siteTitle}
-        siteDescription={siteDescription}
-        menuItems={menuItems}
-      />
-
+    <Layout title={title}>
       <main className="max-w-6xl mx-auto px-4">
         <EntryHeader title={title} />
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
       </main>
-
-      <Footer />
-    </>
+    </Layout>
   );
 }
 
@@ -98,11 +73,5 @@ SinglePage.queries = [
       databaseId,
       asPreview: ctx?.preview,
     }),
-  },
-  {
-    query: SITE_DATA_QUERY,
-  },
-  {
-    query: HEADER_MENU_QUERY,
   },
 ];

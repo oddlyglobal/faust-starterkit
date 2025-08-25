@@ -11,8 +11,9 @@ export default function Page(props: WordPressTemplateProps) {
   return <WordPressTemplate {...props} />;
 }
 
-export function getStaticProps(ctx: GetStaticPropsContext) { // Add type for ctx
-  return getWordPressProps({ ctx });
+export async function getStaticProps(ctx) {
+  const props = await getWordPressProps({ ctx });
+  return { ...props, revalidate: 120 };
 }
 
 export async function getStaticPaths() {
